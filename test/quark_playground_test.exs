@@ -1,9 +1,3 @@
-defmodule Church do
-  import Quark.Partial
-
-  defpartial zero(x), do: x
-end
-
 defmodule Composed do
   import Quark.Compose
 
@@ -21,6 +15,7 @@ defmodule Curried do
 
   defcurry add(a, b), do: a + b
 end
+
 
 defmodule QuarkPlaygroundTest do
   use ExUnit.Case
@@ -54,9 +49,23 @@ defmodule QuarkPlaygroundTest do
 
   # A church numeral applies a function n times
   test "church numeral 0" do
-    assert @x = zero.(@x)
+    assert @x = zero.(&f/1).(@x)
   end
+
   test "church numeral 1" do
-    assert @x = one.(@x)
+    assert f(@x) == one.(&f/1).(@x)
   end
+
+  test "church numeral 2" do
+    assert @x |> f |> f == two.(&f/1).(@x)
+  end
+
+  test "church if" do
+    conditional = fn -> one.(&f/1).(@x) == one.(&f/1).(@x) end
+    truthy = zero.(&f/1).(@x)
+    falsy = one.(&f/1).(@x)
+    assert our_if(conditional, truthy, falsy) == truthy
+  end
+
+  def f(x), do: x - 5
 end
