@@ -11,4 +11,7 @@ defmodule Church do
     f.(l_x).(lol_true)
   end
   defpartial lol_test(b, x, y), do: b.(x).(y)
+  defpartial lol_and(a, b) do
+    a.(b).(lol_false)
+  end
 end

@@ -78,6 +78,14 @@ defmodule QuarkPlaygroundTest do
     assert @y == lol_test(is_zero(one), @x, @y)
   end
 
+  test "church and" do
+    assert lol_false == lol_and(lol_true,  lol_false)
+    assert lol_false == lol_and(lol_false, lol_true)
+    assert lol_false == lol_and(lol_false, lol_false)
+    assert lol_true  == lol_and(lol_true,  lol_true)
+  end
+
+
   # test "church is_zero" do
   #   assert lol_true == is_zero(zero)
   #   assert lol_false == is_zero(one)
