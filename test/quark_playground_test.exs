@@ -21,6 +21,7 @@ defmodule QuarkPlaygroundTest do
   use ExUnit.Case
   import Church
   @x 0
+  @y 1
 
   test "basic currying" do
     assert 3 = Curried.add.(1).(2)
@@ -60,12 +61,34 @@ defmodule QuarkPlaygroundTest do
     assert @x |> f |> f == two.(&f/1).(@x)
   end
 
-  test "church if" do
-    conditional = fn -> one.(&f/1).(@x) == one.(&f/1).(@x) end
-    truthy = zero.(&f/1).(@x)
-    falsy = one.(&f/1).(@x)
-    assert our_if(conditional, truthy, falsy) == truthy
+  test "church true" do
+    assert @x == lol_true(@x, @y)
   end
+
+  test "church false" do
+    assert @y == lol_false(@x, @y)
+  end
+
+  test "church test" do
+    assert @x == lol_test(lol_true, @x, @y)
+  end
+
+  test "church is_zero" do
+    assert @x == lol_test(is_zero(zero), @x, @y)
+    assert @y == lol_test(is_zero(one), @x, @y)
+  end
+
+  # test "church is_zero" do
+  #   assert lol_true == is_zero(zero)
+  #   assert lol_false == is_zero(one)
+  # end
+
+  # test "church if" do
+  #   conditional = fn -> one.(&f/1).(@x) == one.(&f/1).(@x) end
+  #   truthy = zero.(&f/1).(@x)
+  #   falsy = one.(&f/1).(@x)
+  #   assert our_if(conditional, truthy, falsy) == truthy
+  # end
 
   def f(x), do: x - 5
 end
