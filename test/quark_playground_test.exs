@@ -20,8 +20,8 @@ end
 defmodule QuarkPlaygroundTest do
   use ExUnit.Case
   import Church
-  @x 0
-  @y 1
+  @x 99999
+  @y 888888
 
   test "basic currying" do
     assert 3 = Curried.add.(1).(2)
@@ -69,13 +69,10 @@ defmodule QuarkPlaygroundTest do
     assert @y == lol_false(@x, @y)
   end
 
-  test "church test" do
-    assert @x == lol_test(lol_true, @x, @y)
-  end
-
   test "church is_zero" do
-    assert @x == lol_test(is_zero(zero), @x, @y)
-    assert @y == lol_test(is_zero(one), @x, @y)
+    assert lol_true == is_zero(zero)
+    assert lol_false == is_zero(one)
+    assert lol_false == is_zero(two)
   end
 
   test "church and" do
@@ -83,6 +80,13 @@ defmodule QuarkPlaygroundTest do
     assert lol_false == lol_and(lol_false, lol_true)
     assert lol_false == lol_and(lol_false, lol_false)
     assert lol_true  == lol_and(lol_true,  lol_true)
+  end
+
+  test "church or" do
+    assert lol_false == lol_or(lol_false, lol_false)
+    assert lol_true  == lol_or(lol_true,  lol_false)
+    assert lol_true  == lol_or(lol_false, lol_true)
+    assert lol_true  == lol_or(lol_true,  lol_true)
   end
 
 
